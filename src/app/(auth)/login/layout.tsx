@@ -1,18 +1,18 @@
-import { Metadata } from "next";
 import { AuthProvider } from "@/lib/context/authContext";
+import { Geist, Geist_Mono, Montserrat, Poppins } from "next/font/google";
+import "../../../styles/globals.css";
 
-export const metadata: Metadata = {
-  title: "Login | EcoCash",
-  description: "Faça login para acessar suas finanças.",
-};
+const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
+const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
+const montserrat = Montserrat({ variable: "--font-montserrat", subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] });
+const poppins = Poppins({ weight: ['300', '400', '500', '600', '700'], subsets: ['latin'], variable: '--font-poppins' });
 
-export default function LoginLayout({
-  children,
-}: Readonly<{ children: React.ReactNode }>) {
+export default function LoginLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="pt-BR">
-      <body>
+      <body className={`${montserrat.variable} ${geistSans.variable} ${geistMono.variable} ${poppins.variable} antialiased`}>
         <AuthProvider>
+          {/* Renderiza apenas o conteúdo da página de login sem Navbar ou Footer */}
           {children}
         </AuthProvider>
       </body>
