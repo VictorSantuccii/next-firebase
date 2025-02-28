@@ -1,8 +1,7 @@
-import type { Metadata } from "next";
+// app/auth/layout.tsx
+import { AuthProvider } from "@/lib/context/authContext";
 import { Geist, Geist_Mono, Montserrat, Poppins } from "next/font/google";
 import "../../styles/globals.css";
-import { AuthProvider } from "@/lib/context/authContext";
-
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,49 +25,16 @@ const poppins = Poppins({
   variable: '--font-poppins',
 });
 
-export const metadata: Metadata = {
-  title: " EcoCash | Suas finanças em um só lugar ",
-  description: "Cuide de suas finanças de forma simples e inteligente",
-  icons: {
-    icon: '/logosite.png'
-  },
-  openGraph: {
-    images: [
-      {
-        url: "/logo.png", 
-        width: 1200, 
-        height: 630, 
-        alt: "EcoCash",
-      }
-    ]
-  },
-  twitter: {
-    card: "summary_large_image",
-    images: [
-      {
-        url: "/logo.png", 
-        width: 1200, 
-        height: 630,
-        alt: "EcoCash",
-      }
-    ]
-  }
-};
-
 export default function AuthLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="pt-BR">
-      <body
+    <AuthProvider>
+      <main
         className={`${montserrat.variable} ${geistSans.variable} ${geistMono.variable} ${poppins.variable} antialiased`}
       >
-    <AuthProvider>
-          {children}
-          </AuthProvider>
-        </body>
-      </html>
-    );
-  }
+        {children}
+      </main>
+    </AuthProvider>
+  );
+}
