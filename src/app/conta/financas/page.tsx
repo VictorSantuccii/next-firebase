@@ -237,19 +237,31 @@ export default function FinancasPage() {
               <option value="data">Data</option>
             </select>
 
-            <input
-              type="date"
-              value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
-              className="w-full sm:w-auto px-4 py-2 rounded-lg border text-gray-600 border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-            />
+            <div className="flex flex-col">
+                    <label htmlFor="endDate" className="text-sm font-poppins font-thin text-purple-500 mb-2">
+                      Data de início
+                    </label>
+                    <input
+                      id="endDate"
+                      type="date"
+                      value={endDate}
+                      onChange={(e) => setEndDate(e.target.value)}
+                      className="px-4 py-2 rounded-lg border border-indigo-500 focus:ring-2 focus:ring-indigo-300 text-gray-600"
+                    />
+                  </div>
 
-            <input
-              type="date"
-              value={endDate}
-              onChange={(e) => setEndDate(e.target.value)}
-              className="w-full sm:w-auto px-4 py-2 rounded-lg border border-gray-300 text-gray-600 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-            />
+                  <div className="flex flex-col">
+                    <label htmlFor="endDate" className="text-sm font-poppins font-thin text-purple-500 mb-2">
+                      Data de término
+                    </label>
+                    <input
+                      id="endDate"
+                      type="date"
+                      value={endDate}
+                      onChange={(e) => setEndDate(e.target.value)}
+                      className="px-4 py-2 rounded-lg border border-indigo-500 focus:ring-2 focus:ring-indigo-300 text-gray-600"
+                    />
+                  </div>
           </div>
           
           <div className="space-y-4">

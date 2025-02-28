@@ -187,18 +187,30 @@ export default function HistoricoPage() {
 
                 {dateFilter === 'custom' && (
                   <div className="grid grid-cols-2 gap-2">
+                    <div className="flex flex-col">
+                    <label htmlFor="endDate" className="text-sm font-poppins font-thin text-purple-500 mb-2">
+                      Data de início
+                    </label>
                     <input
-                      type="date"
-                      value={startDate}
-                      onChange={(e) => setStartDate(e.target.value)}
-                      className="px-4 py-2 rounded-lg border text-gray-600 border-gray-300"
-                    />
-                    <input
+                      id="endDate"
                       type="date"
                       value={endDate}
                       onChange={(e) => setEndDate(e.target.value)}
-                      className="px-4 py-2 rounded-lg border text-gray-600 border-gray-300"
+                      className="px-4 py-2 rounded-lg border border-indigo-500 focus:ring-2 focus:ring-indigo-300 text-gray-600"
                     />
+                  </div>
+                    <div className="flex flex-col">
+                    <label htmlFor="endDate" className="text-sm font-poppins font-thin text-purple-500 mb-2">
+                      Data de término
+                    </label>
+                    <input
+                      id="endDate"
+                      type="date"
+                      value={endDate}
+                      onChange={(e) => setEndDate(e.target.value)}
+                      className="px-4 py-2 rounded-lg border border-indigo-500 focus:ring-2 focus:ring-indigo-300 text-gray-600"
+                    />
+                  </div>
                   </div>
                 )}
               </div>
