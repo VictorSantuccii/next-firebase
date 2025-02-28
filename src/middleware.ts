@@ -1,11 +1,16 @@
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
+import { NextRequest, NextResponse } from "next/server";
 
-export function middleware(request: NextRequest) {
-  const response = NextResponse.next();
-  
-  response.headers.set('Cross-Origin-Opener-Policy', 'same-origin-allow-popups');
-  response.headers.set('Cross-Origin-Embedder-Policy', 'require-corp');
-  
-  return response;
+export function middleware(req: NextRequest) {
+  const res = NextResponse.next();
+
+  res.headers.set("Cross-Origin-Opener-Policy", "same-origin-allow-popups");
+  res.headers.set("Access-Control-Allow-Origin", "https://seu-dominio.vercel.app");
+  res.headers.set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+  res.headers.set("Access-Control-Allow-Headers", "Content-Type, Authorization");
+
+  return res;
 }
+
+export const config = {
+  matcher: "/api/:path*",
+};
