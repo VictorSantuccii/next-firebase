@@ -10,8 +10,8 @@ const nextConfig: NextConfig = {
         source: '/:path*', // Aplica a todos os caminhos
         headers: [
           {
-            key: 'Cross-Origin-Opener-Policy',
-            value: 'same-origin',
+            key: 'Content-Security-Policy',
+            value: "default-src 'self'; script-src 'self'; style-src 'self';", // Ajuste conforme necessário
           },
         ],
       },
