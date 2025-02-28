@@ -1,10 +1,8 @@
 import type { Metadata } from "next";
-import LayoutWrapper from '@/components/layout-wrapper';
 import { Geist, Geist_Mono, Montserrat, Poppins } from "next/font/google";
-import "../styles/globals.css";
-import Navbar from "@/components/navbar";
-import Footer from "@/components/footer";
+import "../../styles/globals.css";
 import { AuthProvider } from "@/lib/context/authContext";
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,7 +27,7 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "EcoCash | Suas finanças em um só lugar ",
+  title: " EcoCash | Suas finanças em um só lugar ",
   description: "Cuide de suas finanças de forma simples e inteligente",
   icons: {
     icon: '/logosite.png'
@@ -57,7 +55,7 @@ export const metadata: Metadata = {
   }
 };
 
-export default function RootLayout({
+export default function AuthLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -67,13 +65,10 @@ export default function RootLayout({
       <body
         className={`${montserrat.variable} ${geistSans.variable} ${geistMono.variable} ${poppins.variable} antialiased`}
       >
-        <AuthProvider>
-          
-          <Navbar />
+    <AuthProvider>
           {children}
-          <Footer />
-        </AuthProvider>
-      </body>
-    </html>
-  );
-}
+          </AuthProvider>
+        </body>
+      </html>
+    );
+  }
