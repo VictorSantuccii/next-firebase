@@ -34,10 +34,14 @@ export default function LoginPage() {
     setError('');
     try {
       const provider = new GoogleAuthProvider();
+  
+
+      auth.currentUser && auth.signOut();
+  
       const userCredential = await signInWithPopup(auth, provider);
       const firebaseUser = userCredential.user;
-
-      // Verificar se o usuário já tem um perfil completo
+  
+ 
       const userProfile = await userService.getCurrentUser();
       if (!userProfile || !userProfile.phone) {
         router.push('/cadastro');
@@ -45,10 +49,15 @@ export default function LoginPage() {
         router.push('/');
       }
     } catch (err: any) {
-      setError('Falha no login com Google.');
+      if (err.code === "auth/cancelled-popup-request") {
+        setError("A pop-up de login foi fechada antes da autenticação.");
+      } else {
+        setError("Falha no login com Google.");
+      }
       console.error(err);
     }
   };
+  
 
   if (loading) return <div>Carregando...</div>;
 
