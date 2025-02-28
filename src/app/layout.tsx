@@ -1,4 +1,4 @@
-// app/layout.tsx
+import type { Metadata } from "next";
 import { AuthProvider } from "@/lib/context/authContext";
 import { Geist, Geist_Mono, Montserrat, Poppins } from "next/font/google";
 import "../styles/globals.css";
@@ -25,6 +25,35 @@ const poppins = Poppins({
   subsets: ['latin'],
   variable: '--font-poppins',
 });
+
+export const metadata: Metadata = {
+  title: "EcoCash | Suas finanças em um só lugar ",
+  description: "Cuide de suas finanças de forma simples e inteligente",
+  icons: {
+    icon: '/logosite.png'
+  },
+  openGraph: {
+    images: [
+      {
+        url: "/logo.png", 
+        width: 1200, 
+        height: 630, 
+        alt: "EcoCash",
+      }
+    ]
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: [
+      {
+        url: "/logo.png", 
+        width: 1200, 
+        height: 630,
+        alt: "EcoCash",
+      }
+    ]
+  }
+};
 
 export default function RootLayout({
   children,
