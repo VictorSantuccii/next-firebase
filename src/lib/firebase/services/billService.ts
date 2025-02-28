@@ -1,8 +1,8 @@
 import { db, auth } from '../config';
-import { Bill, HistoryEntry, Payment } from '@/types/models';
+import { Bill, Payment } from '@/types/models';
 import { 
   collection, addDoc, getDocs, query, where, doc, 
-  updateDoc, serverTimestamp, writeBatch, getDoc 
+  updateDoc, serverTimestamp, writeBatch, getDoc, deleteDoc 
 } from 'firebase/firestore';
 
 const billsCollection = collection(db, 'bills');
@@ -52,40 +52,49 @@ export const billService = {
   markAsPaid: async (billId: string, paymentData: Omit<Payment, 'paymentId' | 'userId' | 'billId' | 'paymentDate'>) => {
     const userId = auth.currentUser?.uid;
     if (!userId) throw new Error('Usuário não autenticado');
-
+  
     const batch = writeBatch(db);
     const billRef = doc(billsCollection, billId);
     
-    // Atualiza a conta
-    batch.update(billRef, {
-      paid: true,
-      paymentDate: serverTimestamp()
-    });
-
-    // Cria o pagamento
-    const paymentRef = doc(collection(db, 'payments'));
-    batch.set(paymentRef, {
-      ...paymentData,
-      userId,
-      billId,
-      paymentDate: serverTimestamp(),
-      paymentStatus: 'Confirmado'
-    });
-
-    // Cria histórico
-    const historyRef = doc(collection(db, 'history'));
-    batch.set(historyRef, {
-      userId,
-      billId,
-      action: 'Pagamento confirmado',
-      oldData: { paid: false },
-      newData: { 
-        paid: true, 
-        paymentDate: serverTimestamp() 
-      },
-      timestamp: serverTimestamp()
-    });
-
-    await batch.commit();
+    try {
+      // Atualiza a conta para paga
+      batch.update(billRef, {
+        paid: true,
+        paymentDate: serverTimestamp()
+      });
+  
+      // Cria um novo pagamento
+      const paymentRef = doc(collection(db, 'payments'));
+      batch.set(paymentRef, {
+        ...paymentData,
+        userId, // Certifique-se de incluir o userId
+        billId,
+        paymentDate: serverTimestamp(),
+        paymentStatus: 'Confirmado'
+      });
+  
+      // Cria uma entrada no histórico
+      const historyRef = doc(collection(db, 'history'));
+      batch.set(historyRef, {
+        userId, // Certifique-se de incluir o userId
+        billId,
+        action: 'Pagamento confirmado',
+        oldData: { paid: false },
+        newData: { 
+          paid: true, 
+          paymentDate: serverTimestamp() 
+        },
+        timestamp: serverTimestamp()
+      });
+  
+      // Executa o batch
+      await batch.commit();
+    } catch (error) {
+      console.error('Falha ao atualizar os documentos no Firestore:', error);
+      throw new Error('Falha ao atualizar os documentos no Firestore');
+    }
+  },
+  deleteBill: async (billId: string) => {
+    await deleteDoc(doc(billsCollection, billId));
   }
 };

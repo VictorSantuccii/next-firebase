@@ -79,7 +79,7 @@ export default function CadastroPage() {
           phone: formData.phone,
           address: formData.address
         });
-        router.push('/conta/despesas');
+        router.push('/');
       }
     } catch (error: any) {
       console.error('Erro:', error);
@@ -106,7 +106,7 @@ export default function CadastroPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 font-montserrat">
+    <div className="min-h-screen text-gray-400 flex items-center justify-center bg-gray-50 font-montserrat">
       <div className="max-w-md w-full space-y-8 p-10 bg-white rounded-2xl shadow-xl">
         <div className="text-center">
           <h2 className="text-4xl font-bold text-transparent bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text mb-2">

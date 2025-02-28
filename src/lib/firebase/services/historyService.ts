@@ -1,6 +1,6 @@
 import { db, auth } from '../config';
 import { HistoryEntry } from '@/types/models';
-import { collection, addDoc, query, where, getDocs, serverTimestamp } from 'firebase/firestore';
+import { collection, addDoc, query, where, getDocs, serverTimestamp, deleteDoc, doc } from 'firebase/firestore';
 
 const historyCollection = collection(db, 'history');
 
@@ -27,5 +27,9 @@ export const historyService = {
       historyId: doc.id, 
       ...doc.data() 
     } as HistoryEntry));
+  },
+
+  deleteHistoryEntry: async (historyId: string) => {
+    await deleteDoc(doc(historyCollection, historyId));
   }
 };

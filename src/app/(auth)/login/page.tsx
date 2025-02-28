@@ -50,7 +50,7 @@ export default function LoginPage() {
   if (loading) return null;
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 font-montserrat">
+    <div className="min-h-screen text-gray-500 flex items-center justify-center bg-gray-50 font-montserrat">
       <div className="max-w-md w-full space-y-8 p-10 bg-white rounded-2xl shadow-xl">
         <div className="text-center">
           <h2 className="text-4xl font-bold text-transparent bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text mb-2">

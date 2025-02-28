@@ -3,8 +3,8 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { FiMenu, FiX, FiLogOut, FiShoppingCart } from 'react-icons/fi';
-import { FaMoneyBill, FaHistory, FaUser } from 'react-icons/fa';
+import { FiMenu, FiX, FiLogOut } from 'react-icons/fi';
+import { FaMoneyBill, FaHistory, FaUser, FaChartLine } from 'react-icons/fa';
 import { useAuth } from '@/lib/context/authContext';
 
 export default function Navbar() {
@@ -20,46 +20,47 @@ export default function Navbar() {
   }, [pathname]);
 
   const menuItems = [
+    { name: 'Finanças', path: '/conta/financas', icon: <FaChartLine className="w-5 h-5" /> },
     { name: 'Despesas', path: '/conta/despesas', icon: <FaMoneyBill className="w-5 h-5" /> },
     { name: 'Histórico', path: '/conta/historico', icon: <FaHistory className="w-5 h-5" /> },
     { name: 'Perfil', path: '/conta/perfil', icon: <FaUser className="w-5 h-5" /> },
   ];
 
   return (
-    <nav className="bg-white shadow-lg fixed w-full z-50 font-montserrat font-light">
+    <nav className="bg-white shadow-lg fixed w-full z-50 font-poppins">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          {/* Logo com Gradiente */}
-          <div className="flex items-center gap-4">
-            <Link href="/" className="flex-shrink-0 z-50 group relative">
-              <span className="text-2xl font-bold">
-                <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+          {/* Logo com Ícone */}
+          <div className="flex items-center gap-2">
+            <Link href="/" className="flex items-center gap-2 group">
+              <img 
+                src="/logosite.png" 
+                alt="EcoCash Logo"
+                className="h-8 w-8 transition-transform group-hover:scale-110"
+              />
+              <span className="text-xl bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-x1 text-transparent">
                   EcoCash
                 </span>
-                <span className="absolute inset-0 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  EcoCash
-                </span>
-              </span>
+                
             </Link>
-            <button 
-              className="text-gray-900 hover:text-indigo-600 transition-colors"
-              title="Carrinho"
-            >
-              <FiShoppingCart className="h-6 w-6" />
-            </button>
           </div>
 
-          {/* Menu Desktop - Links à direita */}
-          <div className="hidden md:flex items-center gap-6">
-            <div className="flex items-center space-x-6">
+          {/* Menu Desktop */}
+          <div className="hidden md:flex items-center gap-8">
+            <div className="flex items-center space-x-8">
               {menuItems.map((item) => (
                 <Link
                   key={item.name}
                   href={item.path}
-                  className={`text-gray-900 hover:text-indigo-600 transition-colors
-                    ${pathname === item.path ? 'text-indigo-600 font-medium' : ''}`}
+                  className={`relative text-gray-600 hover:text-purple-800 transition-colors
+                    ${pathname === item.path ? 'text-purple-800' : ''}`}
                 >
-                  {item.name}
+                  <span className="relative group">
+                    {item.name}
+                    <span className={`absolute -bottom-1 left-0 w-0 h-0.5 bg-purple-400
+                      transition-all duration-300 group-hover:w-full 
+                      ${pathname === item.path ? 'w-full' : ''}`}></span>
+                  </span>
                 </Link>
               ))}
             </div>
@@ -68,10 +69,14 @@ export default function Navbar() {
               <div className="ml-6 border-l border-gray-200 pl-6">
                 <button
                   onClick={logout}
-                  className="text-gray-900 hover:text-red-600 transition-colors"
+                  className="text-gray-600 hover:text-red-600 transition-colors group relative"
                   title="Sair"
                 >
                   <FiLogOut className="h-5 w-5" />
+                  <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 
+                    text-xs bg-gray-800 text-white px-2 py-1 rounded transition-opacity">
+                    Sair
+                  </span>
                 </button>
               </div>
             )}
@@ -80,7 +85,7 @@ export default function Navbar() {
           {/* Menu Mobile Button */}
           <button
             onClick={toggleMenu}
-            className="md:hidden p-2 rounded-md text-gray-900 hover:text-indigo-600 focus:outline-none"
+            className="md:hidden p-2 rounded-md text-gray-600 hover:text-indigo-600 focus:outline-none"
             aria-label="Abrir menu"
           >
             {isOpen ? <FiX className="h-6 w-6" /> : <FiMenu className="h-6 w-6" />}
@@ -94,8 +99,15 @@ export default function Navbar() {
           ${isOpen ? 'translate-x-0' : '-translate-x-full'}
           transition-transform duration-300 ease-in-out z-50`}
       >
-        <div className="p-4 border-b">
-          <span className="text-xl font-bold text-gray-900">Menu</span>
+        <div className="p-4 border-b flex items-center gap-2">
+          <img 
+            src="/logosite.png" 
+            alt="EcoCash Logo"
+            className="h-8 w-8"
+          />
+          <span className="text-xl bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-x1 text-transparent">
+                  EcoCash
+                </span>
         </div>
         
         <nav className="flex flex-col p-4 space-y-4">
@@ -106,7 +118,7 @@ export default function Navbar() {
               className={`flex items-center space-x-3 p-2 rounded-lg
                 ${pathname === item.path ? 
                   'bg-indigo-50 text-indigo-600' : 
-                  'text-gray-900 hover:bg-gray-100'}`}
+                  'text-gray-400 hover:bg-purple-50'}`}
             >
               {item.icon}
               <span>{item.name}</span>

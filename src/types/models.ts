@@ -8,15 +8,15 @@ export type Address = {
 };
 
 export type User = {
-    userId: string;
-    name: string;
-    email: string;
-    phone?: string;
-    address?: Address;
-    createdAt: Timestamp | Date;
-    lastLogin: Timestamp | Date;
-    profilePicture?: string;
-  };
+  userId: string;
+  name: string;
+  email: string;
+  phone?: string;
+  address?: Address;
+  createdAt: Timestamp | Date;
+  lastLogin: Timestamp | Date;
+  profilePicture?: string;
+};
 
 export type Bill = {
   billId: string;
@@ -40,7 +40,6 @@ export type Payment = {
   paymentDate: Timestamp;
   paymentMethod: string;
   paymentStatus: 'Confirmado' | 'Pendente' | 'Cancelado';
-
 };
 
 export type Category = {
@@ -57,5 +56,25 @@ export type HistoryEntry = {
   action: string;
   oldData: Record<string, any>;
   newData: Record<string, any>;
+  timestamp: Timestamp;
+};
+
+export type Finance = {
+  financeId: string;
+  userId: string;
+  currentBalance: number;
+  totalIncome: number;
+  totalExpenses: number;
+  lastUpdated: Timestamp;
+};
+
+export type FinanceHistoryEntry = {
+  historyId: string;
+  financeId: string;
+  userId: string;
+  action: 'balance_update' | 'income_update' | 'expense_update' | 'finance_created';
+  oldValue: number | null;
+  newValue: number;
+  description?: string;
   timestamp: Timestamp;
 };

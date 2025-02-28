@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { ArrowRightIcon, PlusIcon, UserCircleIcon } from '@heroicons/react/24/outline';
+import { ArrowRightIcon, PlusIcon, ChartBarIcon, CurrencyDollarIcon, ChartPieIcon, ClockIcon } from '@heroicons/react/24/outline';
 import { useAuth } from '@/lib/context/authContext';
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
@@ -12,130 +12,176 @@ export default function HomePage() {
   const { user, loading, isProfileComplete } = useAuth();
 
   useEffect(() => {
-    const checkProfile = async () => {
-      if (!loading && user) {
-        const complete = await isProfileComplete();
-        if (!complete) router.push('/cadastro');
-      } else if (!loading && !user) {
-        router.push('/login');
-      }
-    };
-    checkProfile();
+    // Lógica de redirecionamento se necessário
   }, [user, loading, router, isProfileComplete]);
 
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: { staggerChildren: 0.3 }
+      transition: { 
+        staggerChildren: 0.2,
+        delayChildren: 0.1
+      }
     }
   };
 
   const itemVariants = {
     hidden: { y: 20, opacity: 0 },
-    visible: { y: 0, opacity: 1 }
+    visible: { 
+      y: 0, 
+      opacity: 1,
+      transition: { type: 'easeInOut', duration: 0.6 }
+    }
+  };
+
+  const cardHover = {
+    hover: {
+      y: -5,
+      scale: 1.02,
+      boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.05)',
+      transition: {
+        type: 'spring',
+        stiffness: 300
+      }
+    }
   };
 
   if (loading) return null;
 
   return (
     <div className="min-h-screen bg-white overflow-hidden relative">
-      <div className="absolute inset-0 overflow-hidden">
-        <motion.div
-          initial={{ x: -100, y: -100 }}
-          animate={{ x: ["-10%", "90%", "-10%"], y: ["-20%", "120%", "-20%"] }}
-          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-          className="absolute w-[300px] h-[300px] bg-gradient-to-r from-purple-100 to-blue-100 rounded-full blur-3xl opacity-40"
-        />
-        
-        <motion.div
-          initial={{ x: "100%", y: "100%" }}
-          animate={{ x: ["100%", "-50%", "100%"], y: ["100%", "-50%", "100%"] }}
-          transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-          className="absolute w-[400px] h-[400px] bg-gradient-to-r from-pink-100 to-indigo-100 rounded-full blur-3xl opacity-30"
-        />
-      </div>
+      {/* Espaço para Navbar */}
+      <div className="h-9" />
 
-      <div className="container mx-auto px-4 h-screen flex flex-col items-center justify-center text-center relative z-10">
+      <div className="container mx-auto px-4 pt-8 pb-16 flex flex-col items-center justify-center text-center relative z-10">
+        {/* Logo */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+        
+        >
+          <img 
+            src="/logosite.png" 
+            alt="Logo EcoCash" 
+            className="mx-auto max-w-[250px] md:max-w-[250px]"
+          />
+        </motion.div>
+
         <motion.div
           initial="hidden"
           animate="visible"
           variants={containerVariants}
-          className="max-w-2xl lg:max-w-4xl mx-auto"
+          className="max-w-3xl lg:max-w-5xl mx-auto"
         >
-          <motion.h1
-            variants={itemVariants}
-            className="text-3xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent leading-tight"
-          >
-            Controle Financeiro
-            <br />
-            <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              Inteligente
-            </span>
-          </motion.h1>
-
           <motion.p
             variants={itemVariants}
-            className="font-montserrat text-lg md:text-xl text-gray-600 mb-8"
+            className="font-poppins font-normal text-xl text-gray-400 mb-8 mx-auto"
           >
-            {user ? 'Gerencie suas finanças com precisão' : 'Comece a controlar suas finanças hoje mesmo'}
+            {user ? 'Controle total das suas finanças' : 'Simplifique sua vida financeira'}
           </motion.p>
 
+          {/* Cards de Recursos */}
+          <motion.div
+            variants={containerVariants}
+            className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8"
+          >
+            <motion.div 
+              variants={itemVariants}
+              whileHover="hover"
+              className="bg-white p-4 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100"
+            >
+              <div className="mb-4 inline-flex p-3 rounded-lg bg-blue-50">
+                <CurrencyDollarIcon className="h-6 w-6 text-blue-600" />
+              </div>
+              <h3 className="text-lg font-poppins font-thin text-gray-800 mb-2">Controle Simplificado</h3>
+              <p className="text-sm text-gray-500 font-poppins font-thin">
+                Gerencie despesas e receitas em um único lugar
+              </p>
+            </motion.div>
+
+            <motion.div 
+              variants={itemVariants}
+              whileHover="hover"
+              className="bg-white p-4 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100"
+            >
+              <div className="mb-4 inline-flex p-3 rounded-lg bg-purple-50">
+                <ChartPieIcon className="h-6 w-6 text-purple-600" />
+              </div>
+              <h3 className="text-lg font-poppins font-thin text-gray-800 mb-2">Análise Detalhada</h3>
+              <p className="text-sm text-gray-500 font-poppins font-thin">
+                Veja tudo sendo atualizado em tempo real
+              </p>
+            </motion.div>
+
+            <motion.div 
+              variants={itemVariants}
+              whileHover="hover"
+              className="bg-white p-4 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100"
+            >
+              <div className="mb-4 inline-flex p-3 rounded-lg bg-pink-50">
+                <ClockIcon className="h-6 w-6 text-pink-600" />
+              </div>
+              <h3 className="text-lg font-poppins font-thin text-gray-800 mb-2">Economize Tempo</h3>
+              <p className="text-sm text-gray-500 font-poppins font-thin">
+                Automações para gestão financeira eficiente
+              </p>
+            </motion.div>
+          </motion.div>
+
+          {/* Botões Principais */}
           <motion.div
             variants={itemVariants}
-            className="flex flex-col md:flex-row gap-4 md:gap-6 justify-center"
+            className="flex flex-col md:flex-row gap-3 justify-center"
           >
             {user ? (
               <>
                 <motion.div 
-                  whileHover={{ scale: 1.05 }} 
-                  whileTap={{ scale: 0.95 }}
-                  className="relative overflow-hidden"
+                  whileHover={{ scale: 1.02 }}
+                  className="w-full md:w-auto"
                 >
                   <Link
                     href="/conta/despesas"
-                    className="flex items-center justify-center gap-2 px-6 md:px-8 py-3 md:py-4 bg-indigo-600 text-white rounded-xl shadow-lg hover:shadow-indigo-400/30 transition-all duration-300 relative group"
+                    className="flex items-center justify-center gap-2 px-6 py-3 bg-indigo-600 text-white rounded-lg shadow-sm hover:shadow-md transition-all"
                   >
-                    <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                    <PlusIcon className="h-5 w-5 md:h-6 md:w-6 z-10" />
-                    <span className="font-medium z-10">Criar Nova Despesa</span>
-                    <ArrowRightIcon className="h-4 w-4 md:h-5 md:w-5 ml-1 md:ml-2 z-10" />
+                    <PlusIcon className="h-5 w-5" />
+                    <span className="text-base font-poppins font-thin">Nova Despesa</span>
                   </Link>
                 </motion.div>
 
                 <motion.div 
-                  whileHover={{ scale: 1.05 }} 
-                  whileTap={{ scale: 0.95 }}
-                  className="relative overflow-hidden"
+                  whileHover={{ scale: 1.02 }}
+                  className="w-full md:w-auto"
                 >
                   <Link
-                    href="/conta/perfil"
-                    className="flex items-center justify-center gap-2 px-6 md:px-8 py-3 md:py-4 bg-white text-gray-900 rounded-xl shadow-lg hover:shadow-gray-300/40 transition-all duration-300 relative group border border-gray-100"
+                    href="/conta/financas"
+                    className="flex items-center justify-center gap-2 px-6 py-3 bg-emerald-600 text-white rounded-lg shadow-sm hover:shadow-md transition-all"
                   >
-                    <div className="absolute inset-0 bg-gradient-to-r from-gray-50 to-gray-100 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                    <UserCircleIcon className="h-5 w-5 md:h-6 md:w-6 z-10" />
-                    <span className="font-medium z-10">Ver Meu Perfil</span>
+                    <ChartBarIcon className="h-5 w-5" />
+                    <span className="text-base font-poppins font-thin">Painel Financeiro</span>
                   </Link>
                 </motion.div>
               </>
             ) : (
               <motion.div 
-                whileHover={{ scale: 1.05 }} 
-                whileTap={{ scale: 0.95 }}
-                className="relative overflow-hidden"
+                whileHover={{ scale: 1.02 }}
+                className="w-full md:w-auto"
               >
                 <Link
                   href="/login"
-                  className="flex items-center justify-center gap-2 px-8 md:px-10 py-3 md:py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl shadow-lg hover:shadow-purple-400/30 transition-all duration-300 group"
+                  className="flex items-center justify-center gap-2 px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg shadow-sm hover:shadow-md transition-all"
                 >
-                  <span className="font-medium">Cadastre-se ou Faça Login</span>
-                  <ArrowRightIcon className="h-5 w-5 ml-2 transform group-hover:translate-x-1 transition-transform" />
+                  <span className="text-sm">Começar Agora</span>
+                  <ArrowRightIcon className="h-5 w-5" />
                 </Link>
               </motion.div>
             )}
           </motion.div>
         </motion.div>
       </div>
+
+      {/* Espaço para Footer */}
+      <div className="w-full" />
     </div>
   );
 }
