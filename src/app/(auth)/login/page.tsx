@@ -6,9 +6,6 @@ import { useAuth } from '../../../lib/context/authContext';
 import { useRouter } from 'next/navigation';
 import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { FcGoogle } from 'react-icons/fc';
-import { db } from '../../../lib/firebase/config';
-import { doc, getDoc } from 'firebase/firestore';
-import { User } from '../../../types/models';
 import { userService } from '../../../lib/firebase/services/userService';
 
 export default function LoginPage() {
@@ -24,30 +21,36 @@ export default function LoginPage() {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError('');
     try {
       await signInWithEmailAndPassword(auth, email, password);
-    } catch (err) {
+    } catch (err: any) {
       setError('Falha no login. Verifique suas credenciais.');
+      console.error(err);
     }
   };
 
   const handleGoogleLogin = async () => {
+    setError('');
     try {
-      const userCredential = await signInWithPopup(auth, new GoogleAuthProvider());
+      const provider = new GoogleAuthProvider();
+      const userCredential = await signInWithPopup(auth, provider);
       const firebaseUser = userCredential.user;
-      
-      // Verificar se o usuário já tem registro completo
-      const userData = await userService.getCurrentUser();
-      
-      if (!userData || !userData.phone) {
+
+      // Verificar se o usuário já tem um perfil completo
+      const userProfile = await userService.getCurrentUser();
+      if (!userProfile || !userProfile.phone) {
         router.push('/cadastro');
+      } else {
+        router.push('/');
       }
-    } catch (err) {
+    } catch (err: any) {
       setError('Falha no login com Google.');
+      console.error(err);
     }
   };
 
-  if (loading) return null;
+  if (loading) return <div>Carregando...</div>;
 
   return (
     <div className="min-h-screen text-gray-500 flex items-center justify-center bg-gray-50 font-montserrat">
