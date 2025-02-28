@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import { AuthProvider } from "@/lib/context/authContext";
 
 export const metadata: Metadata = {
-  title: "Login | EcoCash",
+  title: "Cadastro | EcoCash",
   description: "Faça login para acessar suas finanças.",
 };
 

@@ -5,7 +5,7 @@ import "../styles/globals.css";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import { AuthProvider } from "@/lib/context/authContext";
-
+import { usePathname } from 'next/navigation';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -63,16 +63,21 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const pathname = usePathname();
+  
+  // Verificar se o pathname inclui '/login' ou '/cadastro', de forma flexível
+  const isAuthPage = pathname.includes('/login') || pathname.includes('/cadastro');
+
   return (
     <html lang="pt-BR">
       <body
         className={`${montserrat.variable} ${geistSans.variable} ${geistMono.variable} ${poppins.variable} antialiased`}
       >
-        
         <AuthProvider>
-        <Navbar />
-        {children}
-        <Footer />
+          {/* Não exibe a Navbar e o Footer nas páginas de login ou cadastro */}
+          {!isAuthPage && <Navbar />}
+          {children}
+          {!isAuthPage && <Footer />}
         </AuthProvider>
       </body>
     </html>
